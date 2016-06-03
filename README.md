@@ -1,15 +1,15 @@
 # Musebot Template for Supercollider (sclang)
 
-_**Note: This template is a work in progress and subject to breaking changes**_
+_**Note: This template is a work in progress and subject to breaking changes**_  
 _**Note: So far, the template assumes your are using OS X, and has only been tested under Yosemite (10.10.5) and SuperCollider 3.7.1**_
 
-A template for creating MusebBots with Supercollider.
+A template for creating MusebBots in Supercollider.
 
 ## Using the template
 
-0. Familiarize yourself with how to work with MuseBots by checking out the links below.
-1. Copy the template template directory into your `Musebots` directory. Give the directory the same name that you will be calling your new MuseBot (e.g. noisebot). You may want to prefix the name with your initials to distinguish it from other people's MuseBots (e.g. tb_noisebot).
-2. Open the config.txt file and change the first line to `id <your bot's name>`. This should match the directory name (e.g. `id tb_noisebot`).
+0. Familiarize yourself with how to work with MuseBots by checking out the info links below.
+1. Copy the template template directory into your `Musebots` directory. Rename template directory to be that which you will be calling your new MuseBot (e.g. noisebot). You may want to prefix the name with your initials to distinguish it from other people's MuseBots and to keep all of your Musebots together as you start building a collection (e.g. tb_noisebot).
+2. Open the `config.txt` file and change the first line to `id <name>` so that `<name>` matches that of the containing directory (e.g. `id tb_noisebot`).
 3. Define how your MuseBot will generate sound within the `mb = { ... }` function definition in `sc-musebot.sc`.
 4. Register any OSC listeners for (_more description on this process to come_).
 
