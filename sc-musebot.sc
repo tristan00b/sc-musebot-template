@@ -1,96 +1,52 @@
 (
+    var mb;
+    var make_control = this.compileFile("./sc-musebot-include.sc");
+    ~mbctl = make_control.valueEnvir; // instantiate the backend
 
-~mb_control = (
+    //--------------------------------------------------------------------------
+    // globals
+    ~gain = 1.0;
 
-    read_config: {
-        arg self,
-        skip_empty_lines=true,
-        skip_multiple_spaces=true,
-        path="/Users/kaneda/Developer/repos/mume/sc-musebot-template/config.txt";
+    //--------------------------------------------------------------------------
+    // define your MuseBot here
+    mb = {
+        /*
+            Adapted from one of Eli Fieldsteel's awesome SC tutorials:
+            https://tinyurl.com/j7bjf3p
 
-        ~config=Dictionary.newFrom(
-            FileReader.read(
-                path,
-                skip_empty_lines,
-                skip_multiple_spaces
-            ).flatten(1)
-        ).keysValuesChange({
-            | k,v |
-            switch (k,
-                "mc_listen_port",  v.asInt,
-                "my_listen_port",  v.asInt,
-                "output_channels", v.asInt,
-                v)
-        });
-    },
+            Replace this block with your own code!
+        */
+        SynthDef.new(\multi, {
+            var sig, amp, env;
+            env = EnvGen.kr(
+                Env.new([0,1,0],[10,10],[1,-1]),
+                doneAction:2
+            );
+            amp = SinOsc.kr({ExpRand(0.2, 12)}!8).range(0,1);
+            sig = SinOsc.ar({ExpRand(50,1200)}!8);
+            sig = sig * env * amp;
+            sig = Splay.ar(sig) * 0.5;
+            Out.ar(0, sig);
+        }).add;
 
-    register_listeners: {
-        | self |
-        ~osc_listeners = Dictionary.new;
-        ~osc_listeners["kill"] = OSCFunc({ | msg | self.shutdown; },
-            "/agent/kill",
-            NetAddr.new(~config["mc_hostname"]),
-            ~config["my_listen_port"]
-        );
-        thisProcess.addOSCRecvFunc(~osc_listeners["kill"]);
-    },
-
-    heartbeat: {
-        var beat = "beat"; // private var
-        (
-            start: {
-                beat = Routine({
-                    var wait = 1; // 1 second
-                    loop {
-                        NetAddr.new(
-                            ~config["mc_hostname"],
-                            ~config["mc_listen_port"]
-                        ).sendMsg("/agent/alive", ~config["id"]);
-                        //"/agent/alive ".post; ~config["id"].postln;
-                        wait.yield;
-                    }
-                });
-                beat.next;
-                TempoClock.default.sched(0, beat);
-                nil;
-            },
-            kill: {
-                beat.stop;
-                nil;
+        r = Routine({
+            var delta = 5;
+            loop {
+                x = Synth.new(\multi);
+                delta.yield;
             }
-        );
-    }.valueEnvir,
+        });
+        r.play;
+    };
 
-    init:{
-        | self |
-        self.read_config;
-        self.register_listeners;
-        thisProcess.openUDPPort(~config["my_listen_port"]);
-        //thisProcess.openPorts.postln;
-        ~config["id"].postln;
-        "Listening to port: ".post; ~config["my_listen_port"].postln;
-        "Sending to port: ".post;   ~config["mc_listen_port"].postln;
-    },
+    ~mbctl.init(mb); // init the backend with your MuseBot definition
 
-    run: {
-        | self, userfunc |
-        self.heartbeat.start;
-        /* run user func here... */
-        nil;
-    },
+    //--------------------------------------------------------------------------
+    // register OSC listeners here
 
-    shutdown: {
-        |self|
-        "Shutting down.".postln;
-        self.heartbeat.kill;
-        thisProcess.removeOSCRecvFunc(~osc_listeners["kill"]);
-        ~osc_listeners["kill"].free;
-        0.exit; // quit sclang
-    },
+    ~mbctl.register_listener("/agent/some_message", { |msg| msg.postln; });
 
-);
-
-~mb_control.init;
-~mb_control.run;
-// ~mb_control.shutdown;
+    //--------------------------------------------------------------------------
+    // all systems go!
+    ~mbctl.run;
 )
