@@ -110,14 +110,11 @@ var boot_server = {
         |self|
         "quitting musebot...".postln;
         self.heartbeat.kill;
-        // self.gain(EnvGen.kr(Env([1, 0], [5], \exp)));
-        // Scheduler(SystemClock).sched(6, { 0.exit });
         /*~listeners.do {
             | listener |
             thisProcess.removeOSCRecvFunc(listener);
             listener.free;
         };*/
-        /*Server.default.quit; // quit server*/
         0.exit; // quit sclang
     }
 );
