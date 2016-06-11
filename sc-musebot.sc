@@ -5,41 +5,39 @@
 
     //--------------------------------------------------------------------------
     // globals
+
     ~gain = 1.0;
 
     //--------------------------------------------------------------------------
-    // define your MuseBot here
-    mb = {
-        /*
-            Adapted from one of Eli Fieldsteel's awesome SC tutorials:
-            https://tinyurl.com/j7bjf3p
+    // synth defs
 
-            Replace this block with your own code!
-        */
-        SynthDef.new(\multi, {
-            var sig, amp, env;
-            env = EnvGen.kr(
-                Env.new([0,1,0],[10,10],[1,-1]),
-                doneAction:2
-            );
-            amp = SinOsc.kr({ExpRand(0.2, 12)}!8).range(0,1);
-            sig = SinOsc.ar({ExpRand(50,1200)}!8);
-            sig = sig * env * amp;
-            sig = Splay.ar(sig) * 0.5;
-            Out.ar(0, sig);
-        }).add;
+    SynthDef.new(\multi, {
+        // Adapted from one of Eli Fieldsteel's awesome SC tutorials:
+        // https://tinyurl.com/j7bjf3p
+        var sig, amp, env;
+        env = EnvGen.kr(
+            Env.new([0,1,0],[10,10],[1,-1]),
+            doneAction:2
+        );
+        amp = SinOsc.kr({ExpRand(0.2, 12)}!8).range(0,1);
+        sig = SinOsc.ar({ExpRand(50,1200)}!8);
+        sig = sig * env * amp;
+        sig = Splay.ar(sig) * 0.5;
+        Out.ar(0, sig);
+    }).add;
 
-        r = Routine({
-            var delta = 5;
-            loop {
-                x = Synth.new(\multi);
-                delta.yield;
-            }
-        });
-        r.play;
-    };
+    //--------------------------------------------------------------------------
+    // define your MuseBot behaviour here
 
-    ~mbctl.init(mb); // init the backend with your MuseBot definition
+    mb = Routine({
+        var delta = 5;
+        loop {
+            x = Synth.new(\multi);
+            delta.yield;
+        }
+    });
+
+    ~mbctl.init(mb); // mb is triggered internally with the `value` message
 
     //--------------------------------------------------------------------------
     // register OSC listeners here
@@ -48,5 +46,6 @@
 
     //--------------------------------------------------------------------------
     // all systems go!
+
     ~mbctl.run;
 )
