@@ -100,7 +100,7 @@ var boot_server = {
             onComplete: {
                 Server.default.notify;
                 Server.default.initTree;
-                self.userfunc.valueEnvir;
+                self.userfunc.value;
             },
             onFailure: { self.shutdown; false; }
         );
