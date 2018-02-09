@@ -1,6 +1,6 @@
 (
     var mb;
-    var make_control = this.compileFile("./sc-musebot-include.sc");
+    var make_control = this.compileFile("./musebot-include.sc");
     ~mbctl = make_control.valueEnvir; // instantiate the backend
 
     //--------------------------------------------------------------------------

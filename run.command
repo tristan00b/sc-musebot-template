@@ -26,6 +26,6 @@
 cd "`dirname "$0"`"
 
 SC_BIN="/Applications/SuperCollider/SuperCollider.app/Contents/MacOS/sclang"
-MB_FILE="sc-musebot.sc"
+MB_FILE="musebot.sc"
 
 ${SC_BIN} -d . ${MB_FILE}
