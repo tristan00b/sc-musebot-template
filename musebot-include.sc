@@ -75,8 +75,6 @@ var boot_server = {
         ~config = read_config.valueEnvir;
         ~config["server_port"] = ~config["my_listen_port"] + 50000;
 
-
-
         thisProcess.openUDPPort(~config["my_listen_port"]);
         self.heartbeat = make_heartbeat.value;
         self.register_listener("/agent/off",  { | msg | self.shutdown });
@@ -110,11 +108,6 @@ var boot_server = {
         |self|
         "quitting musebot...".postln;
         self.heartbeat.kill;
-        /*~listeners.do {
-            | listener |
-            thisProcess.removeOSCRecvFunc(listener);
-            listener.free;
-        };*/
         0.exit; // quit sclang
     }
 );
