@@ -1,21 +1,24 @@
-# Musebot Template for Supercollider (sclang)
+# Musebot Template for SuperCollider (sclang)
 
-_**Note: This template is a work in progress and subject to breaking changes**_  
-_**Note: So far, the template assumes your are using OS X, and has only been tested under Yosemite (10.10.5) and SuperCollider 3.7.1**_
+_**Note: Template tested under macOS 10.12.6 and SuperCollider 3.9.1**_
 
-A template for creating MusebBots in Supercollider.
+A template for creating Musebots in SuperCollider.
 
-## Using the template
+## Using the Template
 
-0. Familiarize yourself with how to work with MuseBots by checking out the info links below.
-1. Copy the template template directory into your `Musebots` directory. Rename template directory to be that which you will be calling your new MuseBot (e.g. noisebot). You may want to prefix the name with your initials to distinguish it from other people's MuseBots and to keep all of your Musebots together as you start building a collection (e.g. tb_noisebot).
-2. Open the `config.txt` file and change the first line to `id <name>` so that `<name>` matches that of the containing directory (e.g. `id tb_noisebot`).
-3. Define how your MuseBot will generate sound within the `mb = { ... }` function definition in `sc-musebot.sc`.
-4. Register any OSC listeners for (_more description on this process to come_).
+0. Learn about working with Musebots by checking out the info links below
+1. Copy the template directory into your `Musebots` directory and rename it what you wish to call your new Musebot (e.g. `tb_noisebot`). Prefixing the name with your initials to distinguish it from other people's Musebots is generally a good idea 😊
+2. Open the `config.txt` file and change `id <name>` in the first line so that `<name>` matches the name you just gave to parent directory (e.g. `id tb_noisebot`)
+3. Be sure to edit the path to `sclang` in the `run.command` file if you have it installed somewhere other than:
+
+   ```
+   /Applications/SuperCollider/SuperCollider.app/Contents/MacOS/sclang
+   ```
+4. Define your Musebot in `musebot.sc`
 
 ## Caveats
 
-The Supercollider server cannot boot when your input and output sample rates are set differently. When this happens you will see an output such as the following:
+The SuperCollider server cannot boot when your input and output sample rates are set differently. When this happens you will see an error similar to the following:
 
 ```
 Number of Devices: 3
@@ -23,17 +26,16 @@ Number of Devices: 3
    1 : "Built-in Input"
    2 : "Built-in Output"
 
-input and output sample rates do not match. 44100 != 48000
+ERROR: Input sample rate is 41000, but output is 48000. Mismatched sample rates are not supported. To disable input, set the number of input channels to 0.
 could not initialize audio.
-RESULT = 1
-ERROR: server failed to start
-For advice: [http://supercollider.sf.net/wiki/index.php/ERROR:_server_failed_to_start]
+RESULT = 0
 ```
 
-To rectify the situation, open the `Audio MIDI Setup.app` utility in `/Applications/Utilities`, select `Show Audio Devices` from the `Window` menu, then cycle through the list of audio devices in the left pane of the `Audio Devices` window, setting each device to use the same sample rate (e.g. 44100.0 Hz).
+To fix this, open `Audio MIDI Setup.app` located in `/Applications/Utilities`, select `Show Audio Devices` from the `Window` menu, then cycle through the list of audio devices in the left pane of the `Audio Devices` window, setting each device to use the same sample rate (e.g. 44100.0 Hz).
 
 ## More Info
 
 - [Musebots](http://musicalmetacreation.org/musebots/)
-- [MuseBot communication spec](https://docs.google.com/document/d/1UtdLYsOErzXKNFxrM7utHeFXgPNcC_w40lTtUxtCYO8)
-- [Supercollider](https://supercollider.github.io/)
+- [Musebot communication spec](https://docs.google.com/document/d/1UtdLYsOErzXKNFxrM7utHeFXgPNcC_w40lTtUxtCYO8)
+- [MuMe Mailing list](https://groups.google.com/forum/#!forum/musicalmetacreation)
+- [SuperCollider](https://supercollider.github.io/)
